@@ -1,0 +1,38 @@
+pragma solidity ^0.8.15;
+contract todoList {
+    struct todo {
+        string desc; //description of todo work
+        bool status; //status if the todo work is dono or not
+    } //todo custom data structure
+
+    todo[] public todos; //array of todos
+
+    function create(string calldata _desc) external {
+        todos.push(todo ({
+            desc: _desc,
+            status: false
+        })); //pushing a new todo at the end of the array of todos
+    }
+
+    function updateTextInTodo(uint _ind,string calldata _desc) external {
+        todos[_ind].desc = _desc; //updating the desc field of the selected todo
+    }
+
+    function get(uint _ind) external view returns (string memory,bool) {
+        todo memory singleTodo = todos[_ind]; //getting the todo for which the index was given
+        return (singleTodo.desc,singleTodo.status); //returning each field of todo to display
+    }
+
+    function toggleCompleted(uint _ind) external {
+        todos[_ind].status = !todos[_ind].status; //flipping the status value from true to false or false to true
+    }
+
+    function removeTask(uint _ind) external {
+        delete todos[_ind];
+    }
+
+    function removeAllTask() external returns (todo[] memory) {
+        delete todos;
+        return todos;
+    }
+}
